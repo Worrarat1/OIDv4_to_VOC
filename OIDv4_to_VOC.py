@@ -41,7 +41,7 @@ for fname in ids:
         child_filename.text = fname +'.jpg'
 
         child_path = SubElement(top,'path')
-        child_path.text = '/mnt/open_images_volume/' + fname +'.jpg'
+        child_path.text = os.path.join(args.sourcepath, fname + '.jpg')
 
         child_source = SubElement(top,'source')
         child_database = SubElement(child_source, 'database')
@@ -59,10 +59,23 @@ for fname in ids:
             child_depth.text = str(img.shape[2])
         else:
             child_depth.text = '3'
+
         child_seg = SubElement(top, 'segmented')
         child_seg.text = '0'
-        for x in f:     #Iterate for each object in a image. 
+
+        for x in f:     #Iterate for each object in an image.
             x = list(x.split())
+            x_name = ""
+            x_idx = []
+            for i in range(len(x)):
+                try:
+                    float(x[i])
+                except ValueError:
+                    x_name += x[i]
+                    x_idx.append(i)
+            x = [j for i, j in enumerate(x) if i not in x_idx]
+            x = [x_name] + x
+
             child_obj = SubElement(top, 'object')
 
             child_name = SubElement(child_obj, 'name')
