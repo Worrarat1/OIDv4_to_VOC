@@ -35,7 +35,7 @@ for fname in ids:
         img = cv2.imread(imgfile, cv2.IMREAD_UNCHANGED) #Read image to get image width and height
         top = Element('annotation')
         child = SubElement(top,'folder')
-        child.text = 'open_images_volume'
+        child.text = os.path.join(args.sourcepath, fname + '.jpg')
 
         child_filename = SubElement(top,'filename')
         child_filename.text = fname +'.jpg'
